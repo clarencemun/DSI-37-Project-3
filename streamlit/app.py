@@ -4,6 +4,7 @@ from streamlit_option_menu import option_menu
 import pickle
 import pandas as pd
 import numpy as np
+from PIL import Image
 
 from wordcloud import WordCloud
 import plotly.express as px
@@ -551,28 +552,34 @@ if selected == 'Consumers':
         if prediction == 1:
             col1, col2, col3 = st.columns(3)
             with col1:
-                paleo_puffs = Path(__file__).parent / 'images/paleo_puffs.png'
+                paleo_path = Path(__file__).parent / 'images/paleo_puffs.png'
+                paleo_puffs = Image.open(paleo_path)
                 st.image(paleo_puffs, width=265)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Puffs</p>', unsafe_allow_html=True)
             with col2:
-                paleo_chips = Path(__file__).parent / 'images/paleo_chips.webp'
+                paleo_path2 = Path(__file__).parent / 'images/paleo_chips.webp'
+                paleo_chips = Image.open(paleo_path2)
                 st.image(paleo_chips, width=300)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Chips</p>', unsafe_allow_html=True)
             with col3:
-                paleo_muesli = Path(__file__).parent / 'images/paleo_muesli.png'
+                paleo_path3 = Path(__file__).parent / 'images/paleo_muesli.png'
+                paleo_muesli = Image.open(paleo_path3)
                 st.image(paleo_muesli, width=250)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Muesli</p>', unsafe_allow_html=True)
         else:
             col1, col2, col3 = st.columns(3)
             with col1:
-                keto_nut_mix = Path(__file__).parent / 'images/keto_nut_mix.webp'
+                keto_path = Path(__file__).parent / 'images/keto_nut_mix.webp'
+                keto_nut_mix = Image.open(keto_path)
                 st.image(keto_nut_mix, width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Cookies</p>', unsafe_allow_html=True)
             with col2:
-                keto_cookies = Path(__file__).parent / 'images/keto_cookies.webp'
+                keto_path2 = Path(__file__).parent / 'images/keto_cookies.webp'
+                keto_cookies = Image.open(keto_path2)
                 st.image(keto_cookies, width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Cookies</p>', unsafe_allow_html=True)
             with col3:
-                keto_bar = Path(__file__).parent / 'images/keto_bar.webp'
+                keto_path3 = Path(__file__).parent / 'images/keto_bar.webp'
+                keto_bar = Image.open(keto_path3)
                 st.image(keto_bar, width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Bar</p>', unsafe_allow_html=True)

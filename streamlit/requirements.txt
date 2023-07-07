@@ -10,3 +10,4 @@ matplotlib_venn
 regex
 nltk
 scikit-learn
+pillow
