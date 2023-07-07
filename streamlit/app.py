@@ -8,7 +8,7 @@ import numpy as np
 from wordcloud import WordCloud
 import plotly.express as px
 import plotly.graph_objs as go
-import altair as alt
+
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2
 
@@ -18,22 +18,17 @@ import nltk
 
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
-nltk.download('stopwords')
-nltk.download('wordnet')
 
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
 
-from pathlib import Path
 
 # import dataset
-data_path = Path(__file__).parent / 'data/final_df.csv'
-df = pd.read_csv(data_path,lineterminator='\n')
+df = pd.read_csv('data/final_df.csv',lineterminator='\n')
 
 # load the models
-model_path = Path(__file__).parent / 'models/model.pkl'
-model = pickle.load(open(model_path, 'rb'))
+model = pickle.load(open('models/model.pkl', 'rb'))
+with open('models/pipe_gridsearch.pkl', 'rb') as pipe_gridsearch: # open a file, where you stored the pickled data
+    pipe_gridsearch = pickle.load(pipe_gridsearch)
 
 # definitions / lists
 consumer_preference_options = ['Keto','Paleo']
@@ -71,6 +66,16 @@ def clean_text(text):
     tokens = re.split('\W+', text)
     text = ' '.join([wn.lemmatize(word) for word in tokens if word not in stopwords])
     return text
+
+def run_analysis(txt):
+    df = pd.DataFrame()
+    df['txt'] = [txt]
+    result = pipe_gridsearch.predict(df['txt'])
+    if result == ['keto']:
+        result = 'Keto'
+    else:
+        result = 'Paleo'
+    return result
 
 def top_n_grams(corpus, n=20, ngram=(1,1), stop=None):
     # Create a CountVectorizer object with specified n-gram range and stop words
@@ -542,10 +547,6 @@ if selected == 'Consumers':
     st.subheader("Ask us anything!")
     user_comment = st.text_area('Enter here')
     
-    # path for images
-    path = '/images/paleo_puffs.png'
-    images_path = os.path.dirname(__file__)
-    
     # Cleaning the string
     cleaned_user_comment = clean_text(user_comment)
     prediction = model.predict(pd.Series(cleaned_user_comment))
@@ -554,28 +555,22 @@ if selected == 'Consumers':
         if prediction == 1:
             col1, col2, col3 = st.columns(3)
             with col1:
-                paleo_puffs = images_path+'/images/paleo_puffs.png'
-                st.image(paleo_puffs, width=265)
+                st.image('images/paleo_puffs.png', width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Puffs</p>', unsafe_allow_html=True)
             with col2:
-                paleo_chips = images_path+'/images/paleo_chips.webp'
-                st.image(paleo_chips, width=300)
+                st.image('images/paleo_chips.webp', width=300)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Chips</p>', unsafe_allow_html=True)
             with col3:
-                paleo_muesli = images_path+'/images/paleo_muesli.png'
-                st.image(paleo_muesli, width=250)
+                st.image('images/paleo_muesli.png', width=250)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Muesli</p>', unsafe_allow_html=True)
         else:
             col1, col2, col3 = st.columns(3)
             with col1:
-                keto_nut_mix = images_path+'/images/keto_nut_mix.webp'
-                st.image(keto_nut_mix, width=400)
+                st.image('images/keto_nut_mix.webp', width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Cookies</p>', unsafe_allow_html=True)
             with col2:
-                keto_cookies = images_path+'/images/keto_cookies.webp'
-                st.image(keto_cookies, width=400)
+                st.image('images/keto_cookies.webp', width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Cookies</p>', unsafe_allow_html=True)
             with col3:
-                keto_bar = images_path+'/images/keto_bar.webp'
-                st.image(keto_bar, width=400)
+                st.image('images/keto_bar.webp', width=400)
                 st.markdown('<p style="font-size:20px; text-align:left;">Keto Bar</p>', unsafe_allow_html=True)
