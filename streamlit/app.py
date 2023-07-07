@@ -554,7 +554,7 @@ if selected == 'Consumers':
             with col1:
                 paleo_path = Path(__file__).parent / 'images/paleo_puffs.png'
                 paleo_puffs = Image.open(paleo_path)
-                st.image(paleo_puffs, width=265)
+                st.image(paleo_puffs, width=300)
                 st.markdown('<p style="font-size:20px; text-align:left;">Paleo Puffs</p>', unsafe_allow_html=True)
             with col2:
                 paleo_path2 = Path(__file__).parent / 'images/paleo_chips.webp'
